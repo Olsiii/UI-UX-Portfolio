@@ -16,7 +16,8 @@ npm start          # serve the build
 | What | File |
 |---|---|
 | Name, email, phone, intro, about text, socials, services, client logos, FAQs | `data/site.ts` |
-| Case studies (Wilson Real Estate, VoltKos, …) | `data/projects.ts` |
+| Case studies (Wilson Real Estate, …) | `data/projects.ts` |
+| VoltKos case study | `data/voltkos.ts`, images in `public/work/voltkos/` |
 | Profile photo | `public/anila.jpg` |
 
 Lines marked `// TODO` are still placeholders.
@@ -34,7 +35,15 @@ Without `src`, the tinted placeholder art (`ph`) is shown.
 ### Adding a project
 
 Add an object to the `projects` array in `data/projects.ts`. Section types:
-`part` (Part 1 / Part 2 heading), `did` (what I did list), `text` (about / challenges / results), `image`, `pair` (two images side by side). Its page is created automatically at `/works/<slug>`.
+`part` (Part 1 / Part 2 heading), `did` (what I did list), `text` (about / challenges / results), `image`, `pair` (two images side by side).
+
+Showcase blocks for real screens (see `data/voltkos.ts` for a full example; styles are in `app/showcase.css`):
+
+| Type | What it shows |
+|---|---|
+| `compare` | Drag slider with the wireframe on the left and the final design on the right. Both images must be the same size. "View full page" expands it. |
+| `screens` | Browser frame with tabs, one screen per tab. Long screens are cropped and expand with "View full screen". |
+| `phones` | Row of phone frames on a coloured band. Long screens glide through on hover. | Its page is created automatically at `/works/<slug>`.
 
 ## Contact form
 

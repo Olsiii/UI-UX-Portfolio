@@ -129,9 +129,13 @@ export default function Silk() {
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
 
-    const loop = () => {
-      draw();
+    // The surface drifts slowly, so ~30fps is plenty and leaves the GPU free for scrolling.
+    let last = 0;
+    const loop = (now: number) => {
       raf = requestAnimationFrame(loop);
+      if (now - last < 32) return;
+      last = now;
+      draw();
     };
 
     const ro = new ResizeObserver(() => {

@@ -14,27 +14,29 @@ export default function Footer() {
     const el = ref.current;
     if (!el) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let ticking = false;
+    // Page height is cached (reading it on every scroll forces a layout) and refreshed when the page resizes.
+    let docH = document.documentElement.scrollHeight;
 
     const update = () => {
-      ticking = false;
-      const dist = document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
+      const dist = docH - (window.scrollY + window.innerHeight);
       const y = reduce.matches ? 0 : -Math.min(500, Math.max(0, dist) * 0.675);
       el.style.transform = y ? `translateY(${y}px)` : "none";
     };
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
-      }
+    const measure = () => {
+      docH = document.documentElement.scrollHeight;
+      update();
     };
+    const ro = new ResizeObserver(measure);
+    ro.observe(document.body);
 
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", update);
+    measure();
+    // Scroll events already fire once per frame; updating here keeps the footer in step with the page.
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", measure);
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", update);
+      ro.disconnect();
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", measure);
     };
   }, [pathname]);
 

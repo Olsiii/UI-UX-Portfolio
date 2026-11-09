@@ -1,5 +1,8 @@
 import type { Section } from "@/data/types";
 import ArtBlock from "./ArtBlock";
+import Compare from "./Compare";
+import Phones from "./Phones";
+import ScreenTabs from "./ScreenTabs";
 
 export default function ProjectSections({ sections }: { sections: Section[] }) {
   return (
@@ -19,10 +22,16 @@ export default function ProjectSections({ sections }: { sections: Section[] }) {
             return (
               <div className="ptwo" key={i}>
                 {s.arts.map((a, j) => (
-                  <ArtBlock key={j} art={a} className="fade" />
+                  <ArtBlock key={j} art={a} className="fade" style={s.ratio ? { aspectRatio: s.ratio } : undefined} />
                 ))}
               </div>
             );
+          case "compare":
+            return <Compare key={i} before={s.before} after={s.after} label={s.label} labels={s.labels} crop={s.crop} />;
+          case "screens":
+            return <ScreenTabs key={i} tabs={s.tabs} label={s.label} url={s.url} ratio={s.ratio} />;
+          case "phones":
+            return <Phones key={i} items={s.items} label={s.label} bg={s.bg} fg={s.fg} />;
           case "did":
             return (
               <div className="psec fade" key={i}>

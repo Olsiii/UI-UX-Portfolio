@@ -33,7 +33,22 @@ export default async function ProjectPage({ params }: Params) {
           <div><span>Experience:</span>{project.experience}</div>
         </div>
         <div className="ptop">
-          <ArtBlock art={project.cover} className="intro" />
+          {project.coverVideo ? (
+            <div className="ph has-img intro">
+              <video
+                src={project.coverVideo.src}
+                poster={project.coverVideo.poster}
+                aria-label={project.cover.alt}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+              />
+            </div>
+          ) : (
+            <ArtBlock art={project.cover} className="intro" />
+          )}
           <GiantTitle lines={[project.title]} className="ptitle case" />
         </div>
       </div>
