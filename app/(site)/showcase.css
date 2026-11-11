@@ -48,18 +48,22 @@
 /* phones */
 .phones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,3vw,56px);justify-items:center;padding:clamp(40px,6.5vw,100px) clamp(16px,6vw,110px);margin-bottom:20px}
 .phone{margin:0;display:grid;gap:18px;justify-items:center;width:100%;max-width:300px}
-.phone-body{width:100%;padding:3.6%;border-radius:clamp(26px,3.4vw,46px);background:#111;box-shadow:0 40px 60px -30px rgba(6,1,4,.55)}
-/* long screens glide top-to-bottom on hover (always on touch); no inner scrolling */
-.phone-screen{aspect-ratio:402 / 874;overflow:hidden;container-type:size;border-radius:clamp(19px,2.6vw,35px);background:#fff}
-.phone-screen img{width:100%;height:auto;animation:phonePan var(--dur,12s) ease-in-out infinite alternate paused;will-change:transform}
-@keyframes phonePan{to{transform:translateY(calc(-100% + 100cqh))}}
-@media (hover:hover){.phone:hover .phone-screen img{animation-play-state:running}}
-@media (hover:none){.phone-screen img{animation-play-state:running}.hint-hover{visibility:hidden}}
+/* corner radii are percentages, so the phone keeps the same shape at every size */
+.phone-body{width:100%;padding:3.6%;border-radius:15% / 7.1%;background:#111;box-shadow:0 40px 60px -30px rgba(6,1,4,.55)}
+/* a normal screen sets the frame to its own proportions and fills it edge to edge */
+.phone-screen{aspect-ratio:402 / 874;overflow:hidden;container-type:size;border-radius:12.5% / 5.8%;background:#111}
+.phone-screen img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+/* a long page glides top-to-bottom on hover (always on touch); it never moves past its own ends */
+.phone-screen.long img{height:auto;object-fit:initial;animation:phonePan var(--dur,12s) ease-in-out infinite alternate paused;will-change:transform}
+@keyframes phonePan{to{transform:translateY(min(0px,calc(-100% + 100cqh)))}}
+@media (hover:hover){.phone:hover .phone-screen.long img{animation-play-state:running}}
+@media (hover:none){.phone-screen.long img{animation-play-state:running}.hint-hover{visibility:hidden}}
 .phone figcaption{font-size:14px;letter-spacing:-.01em;text-align:center}
 @media (max-width:700px){
-  .phones{display:flex;justify-items:initial;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-inline:14vw}
+  /* one phone at a time, swiped sideways; capped so it never outgrows the screen on large phones and small tablets */
+  .phones{display:flex;justify-items:initial;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-inline:max(14vw,calc(50% - 140px))}
   .phones::-webkit-scrollbar{display:none}
-  .phone{flex:0 0 100%;scroll-snap-align:center;max-width:none}
+  .phone{flex:0 0 min(100%,280px);scroll-snap-align:center;max-width:none}
 }
 
 /* looping hero video at the top of a project page */

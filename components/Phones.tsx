@@ -11,6 +11,9 @@ type Props = {
 };
 
 /** Seconds for a long screen to glide from top to bottom (about 140 design px per second). */
+/** A screen much taller than a phone is a long page: it glides inside the frame. Anything else fills the frame exactly. */
+const isLong = (w: number, h: number) => h / w > 2.4;
+
 const duration = (w: number, h: number) => Math.max(4, Math.round(((h / w) * 402 - 874) / 140));
 
 /**
@@ -28,7 +31,10 @@ export default function Phones({ items, label, bg = "#0b0b0b", fg = "#fff" }: Pr
         {items.map((p) => (
           <figure className="phone" key={p.src}>
             <div className="phone-body">
-              <div className="phone-screen" style={{ "--dur": `${duration(p.w, p.h)}s` } as CSSProperties}>
+              <div
+                className={`phone-screen${isLong(p.w, p.h) ? " long" : ""}`}
+                style={(isLong(p.w, p.h) ? { "--dur": `${duration(p.w, p.h)}s` } : { aspectRatio: `${p.w} / ${p.h}` }) as CSSProperties}
+              >
                 <img src={p.src} alt={p.alt ?? p.label} width={p.w} height={p.h} loading="lazy" decoding="async" />
               </div>
             </div>
