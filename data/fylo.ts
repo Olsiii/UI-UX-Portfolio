@@ -5,14 +5,13 @@ const img = (file: string) => `/work/fylo/${file}`;
 const s = (label: string, file: string, alt?: string) => ({ label, src: img(`${file}.webp`), w: 375, h: 812, alt: alt ?? label });
 
 /**
- * Fylo case study (shown on the Work page only, not on the home page).
+ * Fylo case study.
  *
  * TODO (Anila): the texts below are a first draft written from the screens. Please review and rewrite.
  */
 export const fylo: Project = {
   slug: "fylo",
   title: "Fylo",
-  featured: false,
   cover: { ph: "p2", src: img("cover.jpg"), alt: "Three Fylo app screens" },
   coverVideo: { src: img("hero.mp4"), poster: img("hero-poster.jpg") },
   industry: "Dating · AI Coaching",
