@@ -25,7 +25,7 @@ export default function Phones({ items, label, bg = "#0b0b0b", fg = "#fff" }: Pr
     <div className="fade">
       <div className="blk-head">
         <span>{label}</span>
-        <span className="hint-hover">Hover a phone to scroll it</span>
+        <span className="hint-hover">{items.some((p) => isLong(p.w, p.h)) ? "Hover a phone to scroll it" : ""}</span>
       </div>
       <div className="phones" style={{ background: bg, color: fg } as CSSProperties}>
         {items.map((p) => (
@@ -33,9 +33,11 @@ export default function Phones({ items, label, bg = "#0b0b0b", fg = "#fff" }: Pr
             <div className="phone-body">
               <div
                 className={`phone-screen${isLong(p.w, p.h) ? " long" : ""}`}
-                style={(isLong(p.w, p.h) ? { "--dur": `${duration(p.w, p.h)}s` } : { aspectRatio: `${p.w} / ${p.h}` }) as CSSProperties}
+                style={{ aspectRatio: isLong(p.w, p.h) ? "402 / 874" : `${p.w} / ${p.h}`, "--dur": `${duration(p.w, p.h)}s` } as CSSProperties}
               >
-                <img src={p.src} alt={p.alt ?? p.label} width={p.w} height={p.h} loading="lazy" decoding="async" />
+                <div className="phone-pan">
+                  <img src={p.src} alt={p.alt ?? p.label} width={p.w} height={p.h} loading="lazy" decoding="async" />
+                </div>
               </div>
             </div>
             <figcaption>{p.label}</figcaption>
