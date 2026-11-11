@@ -4,10 +4,12 @@ import CopyEmail from "@/components/CopyEmail";
 import SectionHead from "@/components/SectionHead";
 import { WorkGrid } from "@/components/WorkCard";
 import ArtBlock from "@/components/ArtBlock";
-import { projects } from "@/data/projects";
+import { getProjects } from "@/lib/projects";
 import { site } from "@/data/site";
 
-export default function Home() {
+export default async function Home() {
+  // The home page shows the featured case studies; the Work page shows all of them.
+  const projects = (await getProjects()).filter((p) => p.featured !== false);
   return (
     <main className="page">
       <div className="wrap">

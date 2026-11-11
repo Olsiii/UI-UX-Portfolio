@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import GiantTitle from "@/components/GiantTitle";
 import { WorkGrid } from "@/components/WorkCard";
-import { projects } from "@/data/projects";
+import { getProjects } from "@/lib/projects";
 import { site } from "@/data/site";
 
 export const metadata: Metadata = { title: "Work" };
 
-export default function WorksPage() {
+export default async function WorksPage() {
+  const projects = await getProjects();
   return (
     <main className="page">
       <div className="wrap">

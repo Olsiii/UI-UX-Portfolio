@@ -57,6 +57,10 @@ export default function Compare({ before, after, label, labels = ["Wireframe", "
     if (open) requestAnimationFrame(() => frame.current?.scrollIntoView({ block: "nearest" }));
   };
 
+  // "View full page" only makes sense when the image is taller than the frame.
+  const [cw, ch] = crop.split("/").map(Number);
+  const expandable = after.h / after.w > (ch / cw) * 1.05;
+
   const style = {
     "--p": `${pos}%`,
     aspectRatio: open ? `${after.w} / ${after.h}` : crop,
@@ -101,12 +105,14 @@ export default function Compare({ before, after, label, labels = ["Wireframe", "
           </button>
         </div>
       </div>
+      {expandable && (
       <button type="button" className="cmp-toggle" onClick={toggle} aria-expanded={open}>
         {open ? "Collapse" : "View full page"}
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
           <path d={open ? "M2 9l5-5 5 5" : "M2 5l5 5 5-5"} />
         </svg>
       </button>
+      )}
     </figure>
   );
 }

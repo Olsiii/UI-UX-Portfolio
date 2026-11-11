@@ -5,23 +5,26 @@ import GiantTitle from "@/components/GiantTitle";
 import SectionHead from "@/components/SectionHead";
 import ProjectSections from "@/components/ProjectSections";
 import { WorkGrid } from "@/components/WorkCard";
-import { getProject, projects } from "@/data/projects";
+import { getProject, getProjects } from "@/lib/projects";
 
 type Params = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.slug }));
+/** Case studies added in the admin panel appear without a redeploy. */
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  return (await getProjects()).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const p = getProject((await params).slug);
+  const p = await getProject((await params).slug);
   return { title: p?.title ?? "Project" };
 }
 
 export default async function ProjectPage({ params }: Params) {
-  const project = getProject((await params).slug);
+  const project = await getProject((await params).slug);
   if (!project) notFound();
-  const more = projects.filter((p) => p.slug !== project.slug).slice(0, 2);
+  const more = (await getProjects()).filter((p) => p.slug !== project.slug).slice(0, 2);
 
   return (
     <main className="page">

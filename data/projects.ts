@@ -1,5 +1,7 @@
 import type { Project } from "./types";
 import { voltkos } from "./voltkos";
+import { octo } from "./octo";
+import { fylo } from "./fylo";
 
 /**
  * Case studies, in the order they appear on the site.
@@ -54,6 +56,8 @@ export const projects: Project[] = [
     ],
   },
   voltkos,
+  octo,
+  fylo,
 ];
 
 export function getProject(slug: string) {

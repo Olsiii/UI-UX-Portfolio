@@ -31,6 +31,8 @@ export type Project = {
   slug: string;
   title: string;
   cover: Art;
+  /** Set to false to keep a case study off the home page (it still shows on the Work page). */
+  featured?: boolean;
   /** Optional looping video for the top of the project page (the cover image stays on the work cards). */
   coverVideo?: { src: string; poster?: string };
   industry: string;

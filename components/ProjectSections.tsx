@@ -27,18 +27,23 @@ export default function ProjectSections({ sections }: { sections: Section[] }) {
               </div>
             );
           case "compare":
+            // Blocks without their images yet (a case study in progress) are left out.
+            if (!s.before.src || !s.after.src) return null;
             return <Compare key={i} before={s.before} after={s.after} label={s.label} labels={s.labels} crop={s.crop} />;
           case "screens":
-            return <ScreenTabs key={i} tabs={s.tabs} label={s.label} url={s.url} ratio={s.ratio} />;
+            if (!s.tabs.some((t) => t.src)) return null;
+            return <ScreenTabs key={i} tabs={s.tabs.filter((t) => t.src)} label={s.label} url={s.url} ratio={s.ratio} />;
           case "phones":
-            return <Phones key={i} items={s.items} label={s.label} bg={s.bg} fg={s.fg} />;
+            if (!s.items.some((p) => p.src)) return null;
+            return <Phones key={i} items={s.items.filter((p) => p.src)} label={s.label} bg={s.bg} fg={s.fg} />;
           case "did":
+            if (!s.items.some((it) => it.body.trim())) return null;
             return (
               <div className="psec fade" key={i}>
                 <h2 className="lab">{s.label}</h2>
                 <div className="txt">
                   <div className="did">
-                    {s.items.map((it) => (
+                    {s.items.filter((it) => it.body.trim()).map((it) => (
                       <div key={it.title}>
                         <b>{it.title}</b>
                         <p>{it.body}</p>
@@ -49,6 +54,7 @@ export default function ProjectSections({ sections }: { sections: Section[] }) {
               </div>
             );
           case "text":
+            if (!s.body.trim()) return null;
             return (
               <div className="psec fade" key={i}>
                 <h2 className="lab">{s.label}</h2>
